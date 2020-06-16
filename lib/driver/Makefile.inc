@@ -9,7 +9,7 @@ driver_libenigma_driver_a_SOURCES = \
 	driver/rc.cpp \
 	driver/rcinput.cpp \
 	driver/rfmod.cpp \
-	driver/hdmi_cec.cpp
+	driver/hdmi_cec.cpp \
 	driver/vfd.cpp
 
 driverincludedir = $(pkgincludedir)/lib/driver
@@ -25,7 +25,7 @@ driverinclude_HEADERS = \
 	driver/rcinput.h \
 	driver/rcinput_swig.h \
 	driver/rfmod.h \
-	driver/hdmi_cec.h
+	driver/hdmi_cec.h \
 	driver/vfd.h
 
 if HAVE_LIBSDL
