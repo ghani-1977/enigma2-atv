@@ -6,6 +6,14 @@ if HAVE_LIBDDVD
 SUBDIRS += DVDPlayer
 endif
 
+if HAVE_CubeRevoSTB
+SUBDIRS += CuberevoVFD
+endif
+
+if ENABLE_SPARK
+SUBDIRS += sparkVFD
+endif
+
 if VUSOLO4K
 SUBDIRS += MiniTV QuadPip
 endif
