@@ -34,6 +34,90 @@ TUXBOX_APPS_DVB
 AM_CONDITIONAL(HAVE_GIT_DIR, test -d "$srcdir/.git")
 AM_CONDITIONAL(HAVE_FAKE_GIT_DIR, test -f "$srcdir/.git/last_commit_info")
 
+AC_ARG_WITH(sh4stb,
+	AC_HELP_STRING([--with-sh4stb], [use SH4 STB]),
+	[[with_sh4stb=$withval]],
+	[[with_sh4stb=no]]
+)
+AM_CONDITIONAL(HAVE_SH4STB, test x"$with_sh4stb" = xyes)
+if test x"$with_sh4stb" = xyes ; then
+	AC_DEFINE(HAVE_SH4STB, 1,[Enables SH4 STB support])
+fi
+
+AC_ARG_WITH(cuberevostb,
+	AC_HELP_STRING([--with-cuberevostb], [use CubeRevo STB]),
+	[[with_cuberevostb=$withval]],
+	[[with_cuberevostb=no]]
+)
+AM_CONDITIONAL(HAVE_CubeRevoSTB, test x"$with_cuberevostb" = xyes)
+if test x"$with_cuberevostb" = xyes ; then
+	AC_DEFINE(HAVE_CubeRevoSTB, 1,[Enables CubeRevo STB support])
+fi
+
+AC_ARG_ENABLE(cuberevo,
+	[  --enable-cuberevo            enable cuberevo stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO, 1, [enable cuberevo stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO,test "$enable_cuberevo" = "yes")
+if test "$enable_cuberevo" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO, 1, [enable cuberevo stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_2000hd,
+	[  --enable-cuberevo_2000hd            enable cuberevo_2000hd stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_2000HD, 1, [enable cuberevo_2000hd stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_2000HD, test "$enable_cuberevo_2000hd" = "yes")
+if test "$enable_cuberevo_2000hd" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_2000HD, 1, [enable cuberevo_2000hd stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_250hd,
+	[  --enable-cuberevo_250hd            enable cuberevo_250hd stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_250HD, 1, [enable cuberevo_250hd stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_250HD, test "$enable_cuberevo_250hd" = "yes")
+if test "$enable_cuberevo_250hd" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_250HD, 1, [enable cuberevo_250hd stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_3000hd,
+	[  --enable-cuberevo_3000hd            enable cuberevo_3000hd stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_3000HD, 1, [enable cuberevo_3000hd stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_3000HD, test "$enable_cuberevo_3000hd" = "yes")
+if test "$enable_cuberevo_3000hd" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_3000HD, 1, [enable cuberevo_3000hd stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_9500hd,
+	[  --enable-cuberevo_9500hd            enable cuberevo_9500hd stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_9500HD, 1, [enable cuberevo_9500hd stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_9500HD, test "$enable_cuberevo_9500hd" = "yes")
+if test "$enable_cuberevo_9500hd" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_9500HD, 1, [enable cuberevo_9500hd stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_mini,
+	[  --enable-cuberevo_mini            enable cuberevo_mini stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_MINI, 1, [enable cuberevo_mini stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_MINI, test "$enable_cuberevo_mini" = "yes")
+if test "$enable_cuberevo_mini" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_MINI, 1, [enable cuberevo_mini stuff])
+fi
+
+AC_ARG_ENABLE(cuberevo_mini2,
+	[  --enable-cuberevo_mini2            enable cuberevo_mini2 stuff],
+	[AC_DEFINE(ENABLE_CUBEREVO_MINI2, 1, [enable cuberevo_mini2 stuff])])
+AM_CONDITIONAL(ENABLE_CUBEREVO_MINI2, test "$enable_cuberevo_mini2" = "yes")
+if test "$enable_cuberevo_mini2" = "yes"; then
+	AC_DEFINE(ENABLE_CUBEREVO_MINI2, 1, [enable cuberevo_mini2 stuff])
+fi
+
+AC_ARG_ENABLE(spark,
+	[  --enable-spark            enable spark stuff],
+	[AC_DEFINE(ENABLE_SPARK, 1, [enable spark stuff])])
+AM_CONDITIONAL(ENABLE_SPARK, test "$enable_spark" = "yes")
+if test "$enable_spark" = "yes"; then
+	AC_DEFINE(ENABLE_SPARK, 1, [enable spark stuff])
+fi
+
 dnl versions of gstreamer and plugins-base
 AC_ARG_WITH(gstversion,
 	AS_HELP_STRING([--with-gstversion],[use gstreamer version (major.minor)]),
@@ -880,6 +964,8 @@ lib/python/Plugins/Makefile
 lib/python/Plugins/Extensions/Makefile
 lib/python/Plugins/Extensions/AtileHD/Makefile
 lib/python/Plugins/Extensions/AtileHD/pic/Makefile
+lib/python/Plugins/Extensions/CuberevoVFD/Makefile
+lib/python/Plugins/Extensions/CuberevoVFD/meta/Makefile
 lib/python/Plugins/Extensions/CutListEditor/Makefile
 lib/python/Plugins/Extensions/CutListEditor/meta/Makefile
 lib/python/Plugins/Extensions/DVDBurn/Makefile
@@ -901,6 +987,8 @@ lib/python/Plugins/Extensions/ProgrammlistenUpdater/Makefile
 lib/python/Plugins/Extensions/SocketMMI/Makefile
 lib/python/Plugins/Extensions/SocketMMI/meta/Makefile
 lib/python/Plugins/Extensions/SocketMMI/src/Makefile
+lib/python/Plugins/Extensions/sparkVFD/Makefile
+lib/python/Plugins/Extensions/sparkVFD/meta/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/Makefile
 lib/python/Plugins/Extensions/TuxboxPlugins/meta/Makefile
 lib/python/Plugins/Extensions/Infopanel/Makefile
@@ -943,6 +1031,8 @@ lib/python/Plugins/SystemPlugins/VideoEnhancement/Makefile
 lib/python/Plugins/SystemPlugins/VideoEnhancement/meta/Makefile
 lib/python/Plugins/SystemPlugins/VideoTune/Makefile
 lib/python/Plugins/SystemPlugins/VideoTune/meta/Makefile
+lib/python/Plugins/SystemPlugins/VFD-Icons/Makefile
+lib/python/Plugins/SystemPlugins/VFD-Icons/meta/Makefile
 lib/python/Plugins/SystemPlugins/WirelessLan/Makefile
 lib/python/Plugins/SystemPlugins/WirelessLan/meta/Makefile
 lib/python/Plugins/SystemPlugins/SkinSelector/Makefile
