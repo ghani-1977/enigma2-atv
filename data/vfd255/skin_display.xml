@@ -179,7 +179,7 @@
 
 <!-- menus-->
 	<screen name="MenuSummary" position="0,0" size="255,64">
-		<widget source="parent.title" render="Label" position="0,0" size="160,22" font="FdLcD;18" halign="left" noWrap="1" />
+		<widget source="Title" render="Label" position="0,0" size="160,22" font="FdLcD;18" halign="left" noWrap="1" />
 		<widget source="parent.menu" render="Label" position="0,21" size="255,50" font="FdLcD;16" halign="left">
 			<convert type="StringListSelection" />
 		</widget>
@@ -307,13 +307,12 @@
 		<widget source="parent.summary_list" render="Label" position="0,0" size="256,64" font="FdLcD;11" noWrap="1" />
 	</screen>
 
-	<screen name="MessageBox_summary" position="0,0" size="256,64">
-		<widget source="parent.Text" render="Label" position="0,0" size="256,40" font="FdLcD;17" halign="center" valign="center" />
-		<widget source="parent.selectedChoice" render="Label" position="0,42" size="256,22" zPosition="1" font="FdLcD;20" halign="center" valign="center" />
+	<screen name="MessageBoxSummary" position="0,0" size="256,64">
+		<widget source="text" render="Label" position="0,0" size="256,40" font="FdLcD;17" halign="center" valign="center" />
+		<widget source="option" render="Label" position="0,42" size="256,22" zPosition="1" font="FdLcD;20" halign="center" valign="center" />
 	</screen>
-	<screen name="MessageBoxSimple_summary" position="0,0" size="256,64">
-		<widget source="parent.Text" render="Label" position="0,0" size="256,45" font="FdLcD;22" halign="center" valign="center" />
-		<widget source="parent.selectedChoice" render="Label" position="0,46" size="256,20" zPosition="1" font="FdLcD;20" halign="center" valign="center" />
+	<screen name="MessageBoxSimpleSummary" position="0,0" size="256,64">
+		<panel name="MessageBoxSummary" />
 	</screen>
 
 	<screen name="AboutSummary" position="0,0" size="255,64">
@@ -346,16 +345,6 @@
 			<convert type="StringListSelection" />
 		</widget>
 	</screen-->
-
-	<!-- LanguageSelection -->
-	<screen name="LanguageSelection_summary" position="0,0" size="256,64">
-		<widget source="parent.Title" render="Label" position="0,0" size="256,40" font="FdLcD;17" halign="center" valign="center" />
-		<widget source="parent.summarylangsel" render="Label" position="0,42" size="256,22" zPosition="1" font="FdLcD;20" halign="center" valign="center" />
-	</screen>
-	<screen name="LanguageWizardSummary" position="0,0" size="256,64">
-		<widget source="parent.summarytext" render="Label" position="0,0" size="256,40" font="FdLcD;17" halign="center" />
-		<widget source="parent.summarylangname" render="Label" position="0,42" size="256,22" font="FdLcD;20" halign="center" noWrap="1"  />
-	</screen>
 
 <!-- wizard -->
 	<screen name="WizardSummary" position="0,0" size="256,64">

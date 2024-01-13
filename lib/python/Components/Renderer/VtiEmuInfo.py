@@ -1,9 +1,10 @@
 from Components.config import config
 from Components.VariableText import VariableText
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from Screens.InfoBar import InfoBar
 from Tools.Directories import resolveFilename, SCOPE_SYSETC
 from enigma import eLabel
+
 
 class VtiEmuInfo(VariableText, Renderer):
 
@@ -30,7 +31,7 @@ class VtiEmuInfo(VariableText, Renderer):
                 emuversion = file.readline()
                 file.close()
                 return emuversion
-            except IOError:
+            except OSError:
                 return 'not detected Softcam'
 
         else:

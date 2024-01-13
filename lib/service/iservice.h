@@ -62,9 +62,11 @@ public:
 #ifndef SWIG
 	int data[8];
 	std::string path;
+	std::string alternativeurl;
 #endif
 	std::string getPath() const { return path; }
 	void setPath( const std::string &n ) { path=n; }
+	void setAlternativeUrl( const std::string &n ) { alternativeurl=n; }
 
 	unsigned int getUnsignedData(unsigned int num) const
 	{
@@ -442,7 +444,7 @@ public:
 	virtual ePtr<iServiceInfoContainer> getInfoObject(int w);
 	virtual ePtr<iDVBTransponderData> getTransponderData();
 	virtual void getAITApplications(std::map<int, std::string> &aitlist) {};
-	virtual PyObject *getHbbTVApplications() {return getHbbTVApplications();};
+	virtual PyObject *getHbbTVApplications() {return getHbbTVApplications();};  // NOSONAR
 	virtual void getCaIds(std::vector<int> &caids, std::vector<int> &ecmpids, std::vector<std::string> &ecmdatabytes);
 	virtual long long getFileSize();
 
@@ -466,6 +468,7 @@ public:
 		syncState,
 		frontendNumber,
 		signalQualitydB,
+		isUsbTuner,
 		frontendStatus,
 		snrValue,
 		frequency,
@@ -659,13 +662,26 @@ public:
 
 	virtual int isTimeshiftActive()=0;
 	virtual int isTimeshiftEnabled()=0;
-			/* this essentially seeks to the relative end of the timeshift buffer */
+			/* this essentially seeks to the relative end of the time shift buffer */
 	virtual RESULT activateTimeshift()=0;
 	virtual RESULT saveTimeshiftFile()=0;
 	virtual std::string getTimeshiftFilename()=0;
 	virtual void switchToLive()=0;
 };
 SWIG_TEMPLATE_TYPEDEF(ePtr<iTimeshiftService>, iTimeshiftServicePtr);
+
+SWIG_IGNORE(iTapService);
+class iTapService: public iObject
+{
+#ifdef SWIG
+	iTapService();
+	~iTapService();
+#endif
+public:
+	virtual bool startTapToFD(int fd, const std::vector<int> &pids, int packetsize = 188)=0;
+	virtual void stopTapToFD()=0;
+};
+SWIG_TEMPLATE_TYPEDEF(ePtr<iTapService>, iTapServicePtr);
 
 	/* not related to eCueSheet */
 
@@ -699,6 +715,7 @@ class PyList;
 struct eDVBTeletextSubtitlePage;
 struct eDVBSubtitlePage;
 struct ePangoSubtitlePage;
+struct eVobSubtitlePage;
 class eRect;
 class gRegion;
 class gPixmap;
@@ -710,6 +727,7 @@ public:
 	virtual void setPage(const eDVBTeletextSubtitlePage &p) = 0;
 	virtual void setPage(const eDVBSubtitlePage &p) = 0;
 	virtual void setPage(const ePangoSubtitlePage &p) = 0;
+	virtual void setPage(const eVobSubtitlePage &p) = 0;
 	virtual void setPixmap(ePtr<gPixmap> &pixmap, gRegion changed, eRect dest) = 0;
 	virtual void destroy() = 0;
 };
@@ -949,6 +967,8 @@ public:
 
 		evVideoGammaChanged,
 
+		evFccFailed,
+
 		evUser = 0x100
 	};
 };
@@ -977,6 +997,7 @@ public:
 	virtual SWIG_VOID(RESULT) subServices(ePtr<iSubserviceList> &SWIG_OUTPUT)=0;
 	virtual SWIG_VOID(RESULT) frontendInfo(ePtr<iFrontendInformation> &SWIG_OUTPUT)=0;
 	virtual SWIG_VOID(RESULT) timeshift(ePtr<iTimeshiftService> &SWIG_OUTPUT)=0;
+	virtual SWIG_VOID(RESULT) tap(ePtr<iTapService> &SWIG_OUTPUT)=0;
 	virtual SWIG_VOID(RESULT) cueSheet(ePtr<iCueSheet> &SWIG_OUTPUT)=0;
 	virtual SWIG_VOID(RESULT) subtitle(ePtr<iSubtitleOutput> &SWIG_OUTPUT)=0;
 	virtual SWIG_VOID(RESULT) audioDelay(ePtr<iAudioDelay> &SWIG_OUTPUT)=0;
@@ -1006,6 +1027,8 @@ public:
 		evRecordFailed,
 		evRecordWriteError,
 		evNewEventInfo,
+		evTuneStart,
+		evPvrTuneStart,
 		evRecordAborted,
 		evGstRecordEnded,
 	};

@@ -73,9 +73,7 @@ class eServiceMP3InfoContainer: public iServiceInfoContainer
 
 	unsigned char *bufferData;
 	unsigned int bufferSize;
-#if GST_VERSION_MAJOR >= 1
 	GstMapInfo map;
-#endif
 
 public:
 	eServiceMP3InfoContainer();
@@ -144,6 +142,7 @@ public:
 	RESULT subtitle(ePtr<iSubtitleOutput> &ptr);
 	RESULT audioDelay(ePtr<iAudioDelay> &ptr);
 	RESULT cueSheet(ePtr<iCueSheet> &ptr);
+	RESULT tap(ePtr<iTapService> &ptr) { ptr = 0; return -1; };
 
 		// not implemented (yet)
 	RESULT setTarget(int target, bool noaudio = false) { return -1; }
@@ -316,7 +315,6 @@ private:
 	bool m_cuesheet_loaded;
 	bool m_audiosink_not_running;
 	/* servicemMP3 chapter TOC support CVR */
-#if GST_VERSION_MAJOR >= 1
 	bool m_use_chapter_entries;
 	/* last used seek position gst-1 only */
 	gint64 m_last_seek_pos;
@@ -326,7 +324,6 @@ private:
 	gint m_last_seek_count;
 	bool m_seeking_or_paused;
 	bool m_to_paused;
-#endif
 	bufferInfo m_bufferInfo;
 	errorInfo m_errorInfo;
 	std::string m_download_buffer_path;
@@ -337,6 +334,7 @@ private:
 		stIdle, stRunning, stStopped,
 	};
 	int m_state;
+	bool m_gstdot;
 	GstElement *m_gst_playbin;
 	GstTagList *m_stream_tags;
 	bool m_coverart;
@@ -353,13 +351,9 @@ private:
 	GstPad* gstCreateSubtitleSink(eServiceMP3* _this, subtype_t type);
 	void gstPoll(ePtr<GstMessageContainer> const &);
 	static void playbinNotifySource(GObject *object, GParamSpec *unused, gpointer user_data);
-#if GST_VERSION_MAJOR < 1
-	static gint match_sinktype(GstElement *element, gpointer type);
-#else
 /* TOC processing CVR */
 	void HandleTocEntry(GstMessage *msg);
 	static gint match_sinktype(const GValue *velement, const gchar *type);
-#endif
 	static void handleElementAdded(GstBin *bin, GstElement *element, gpointer user_data);
 
 	struct subtitle_page_t

@@ -6,6 +6,8 @@ Copyright (C) 2014 Peter Urbanec
 All Right Reserved
 License: Proprietary / Commercial - contact enigma.licensing (at) urbanec.net
 '''
+from __future__ import print_function
+import six
 
 import requests
 import json
@@ -14,19 +16,21 @@ from fcntl import ioctl
 from struct import pack
 from socket import socket, create_connection, AF_INET, SOCK_DGRAM, SHUT_RDWR, error as sockerror
 from . import config, saveConfigFile, getIceTVDeviceType
-from boxbranding import getMachineBrand, getMachineName, getImageBuild
+from Components.SystemInfo import BoxInfo
 
 _version_string = "20191127"
 _protocol = "http://"
 _device_type_id = getIceTVDeviceType()
 _debug_level = 0  # 1 = request/reply, 2 = 1+headers, 3 = 2+partial body, 4 = 2+full body
 
-print "[IceTV] server set to", config.plugins.icetv.server.name.value
+print("[IceTV] server set to", config.plugins.icetv.server.name.value)
 
 iceTVServers = {
     _("Australia"): "api.icetv.com.au",
-    _("Germany"): "api.icetv.de",
+    # The German IceTV service has closed down
+    # _("Germany"): "api.icetv.de",
 }
+
 
 def isServerReachable():
     try:
@@ -35,24 +39,27 @@ def isServerReachable():
         sock.close()
         return True
     except sockerror as ex:
-        print "[IceTV] Can not connect to IceTV server:", str(ex)
+        print("[IceTV] Can not connect to IceTV server:", str(ex))
     return False
+
 
 def getMacAddress(ifname):
     result = "00:00:00:00:00:00"
     sock = socket(AF_INET, SOCK_DGRAM)
     # noinspection PyBroadException
     try:
-        iface = pack('256s', ifname[:15])
+        iface = pack('256s', six.ensure_binary(ifname[:15], "utf-8"))
         info = ioctl(sock.fileno(), 0x8927, iface)
-        result = ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1].upper()
+        result = ''.join(['%02x:' % six.byte2int([char]) for char in info[18:24]])[:-1].upper()
     except:
         pass
     sock.close()
     return result
 
+
 def haveCredentials():
     return bool(config.plugins.icetv.member.token.value)
+
 
 def getCredentials():
     return {
@@ -60,14 +67,17 @@ def getCredentials():
             "token": config.plugins.icetv.member.token.value,
     }
 
+
 def clearCredentials():
     config.plugins.icetv.member.token.value = ""
     config.plugins.icetv.member.token.save()
     saveConfigFile()
 
+
 def showIdToEventId(show_id):
     # Fit within 16 bits, but avoid 0 and 0xFFF8 - 0xFFFF
     return (int(show_id) % 0xFFF7) + 1
+
 
 class Request(object):
     def __init__(self, resource):
@@ -79,7 +89,7 @@ class Request(object):
         self.headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "SystemPlugins.IceTV/%s (%s; %s; %s)" % (_version_string, getMachineBrand(), getMachineName(), getImageBuild()),
+            "User-Agent": "SystemPlugins.IceTV/%s (%s; %s; %s)" % (_version_string, BoxInfo.getItem("displaybrand"), BoxInfo.getItem("displaymodel"), BoxInfo.getItem("imagebuild")),
         }
         self.url = _protocol + config.plugins.icetv.server.name.value + resource
         self.data = {}
@@ -92,24 +102,25 @@ class Request(object):
 
     def send(self, method):
         data = json.dumps(self.data)
-        r = requests.request(method, self.url, params=self.params, headers=self.headers, data=data, verify=False, timeout=10.0)
+        # FIXME verify=False -> verify=True
+        r = requests.request(method, self.url, params=self.params, headers=self.headers, data=data, verify=False, timeout=10.0)  #NOSONAR
         err = not r.ok
         if err or _debug_level > 0:
-            print "[IceTV]", r.request.method, r.request.url
+            print("[IceTV]", r.request.method, r.request.url)
         if err or _debug_level > 1:
-            print "[IceTV] headers", r.request.headers
+            print("[IceTV] headers", r.request.headers)
         if err or _debug_level == 3:
-            print "[IceTV]", self._shorten(r.request.body)
+            print("[IceTV]", self._shorten(r.request.body))
         elif err or _debug_level > 3:
-            print "[IceTV]", r.request.body
+            print("[IceTV]", r.request.body)
         if err or _debug_level > 0:
-            print "[IceTV]", r.status_code, r.reason
+            print("[IceTV]", r.status_code, r.reason)
         if err or _debug_level > 1:
-            print "[IceTV] headers", r.headers
+            print("[IceTV] headers", r.headers)
         if err or _debug_level == 3:
-            print "[IceTV]", self._shorten(r.text)
+            print("[IceTV]", self._shorten(r.text))
         elif err or _debug_level > 3:
-            print "[IceTV]", r.text
+            print("[IceTV]", r.text)
         self.response = r
         if r.status_code == 401:
             clearCredentials()

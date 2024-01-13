@@ -62,6 +62,7 @@ unicable (version)
 		<manufacturer name="Dura-Sat(DUR-line)">
 			<product name="UK101" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="UK102" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
+			<product name="UK104" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="UK119" format="EN50607" bootuptime="2500"
 					scr1= "1076" scr2= "1178" scr3= "1280" scr4= "1382" scr5= "1484" scr6= "1586" scr7= "1688" scr8= "1790"
 					scr9=  "975" scr10="1025" scr11="1225" scr12="1330" scr13="1430" scr14="1535" scr15="1630" scr16="1730"
@@ -81,6 +82,14 @@ unicable (version)
 		</manufacturer>
 		<manufacturer name="EDISON">
 			<product name="SCR-1" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
+		</manufacturer>
+		<manufacturer name="Fte">
+			<product name="pemium dCSS24 24ch" format="EN50607"
+				scr1= "1076" scr2= "1178" scr3= "1280" scr4= "1382" scr5= "1484" scr6= "1586" scr7= "1688" scr8= "1790"
+				scr9=  "975" scr10="1025" scr11="1225" scr12="1330" scr13="1430" scr14="1535" scr15="1630" scr16="1730"
+				scr17="1840" scr18="1880" scr19="1920" scr20="1960" scr21="2000" scr22="2040" scr23="2080" scr24="2125"/>
+			<product name="pemium dCSS 8ch" format="EN50494"
+				scr1= "1076" scr2= "1178" scr3= "1280" scr4= "1382" scr5= "1484" scr6= "1586" scr7= "1688" scr8= "1790"/>
 		</manufacturer>
 		<manufacturer name="Fuba">
 			<product name="DEK 342" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
@@ -117,6 +126,7 @@ unicable (version)
 			<product name="IDLP-40UNIQD+S" scr1="1680" scr2="1420" scr3="2040" scr4="1210"/>
 			<product name="IDLB-QUDL-UNI2L-OPP" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="IDLB-QUDL42-UNI2L-1PP" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
+			<product name="IDLB-QUDL43-UNE1L-OPP" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="IDLU-24UL40-UNMOO-OPP" format="EN50607" bootuptime="1000"
 					scr1 ="1210" scr2= "1420" scr3= "1680" scr4= "2040" scr5= "1005" scr6= "1050" scr7= "1095" scr8= "1140"
 					scr9 ="1260" scr10="1305" scr11="1350" scr12="1475" scr13="1520" scr14="1565" scr15="1610" scr16="1725"
@@ -136,7 +146,8 @@ unicable (version)
 		<manufacturer name="Maclean">
 			<product name="Unicable II MCTV-785" format="jess"
 					scr1 ="1210" scr2 ="1420" scr3 ="1680" scr4 ="2040" scr5 ="985"  scr6 ="1050" scr7 ="1115" scr8 ="1275"
-					scr9 ="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>		
+					scr9 ="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>
+			<product name="MCTV-762" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 		</manufacturer>
 		<manufacturer name="Megasat">
 			<product name="Unicable II LNB Diavolo" format="EN50607" bootuptime="2500"
@@ -147,6 +158,9 @@ unicable (version)
 		<manufacturer name="Opticum">
 			<product name="Unicable LNB"
 					scr1 ="1210" scr2= "1420" scr3= "1680" scr4= "2040" scr5= "970" scr6= "1030" scr7= "1090" scr8= "1150"/>
+			<product name="SCR 16UB Pro" format="JESS"
+				scr1="1210" scr2="1420" scr3="1680" scr4="2040" scr5="985" scr6="1050" scr7="1115" scr8="1275"
+				scr9="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>
 		</manufacturer>
 		<manufacturer name="Radix">
 			<product name="Unicable LNB" scr1="1680" scr2="1420" scr3="2040" scr4="1210"/>
@@ -290,6 +304,9 @@ unicable (version)
 					scr9 ="1128" scr10="1164" scr11="1256" scr12="1292" scr13="1328" scr14="1364" scr15="1458" scr16="1494"
 					scr17="1530" scr18="1566" scr19="1602" scr20="1638" scr21="1716" scr22="1752" scr23="1788" scr24="1824"
 					scr25="1860" scr26="1896" scr27="1932" scr28="1968" scr29="2004" scr30="2076" scr31="2112" scr32="2148"/>
+			<product name="ISKY-UST110-CUO4O-16P" format="DiSEqC" positions="1" bootuptime="2500"
+					scr1 ="1210" scr2 ="1420" scr3 ="1680" scr4 ="2040" scr5 ="985"  scr6 ="1050" scr7 ="1115" scr8 ="1275"
+					scr9 ="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>
 		</manufacturer>
 		<manufacturer name="Johansson">
 			<product name="9712A" format="DiSEqC" positions="1" scr1="1280" scr2="1382" scr3="1484"/>
@@ -454,6 +471,7 @@ unicable (version)
 		<manufacturer name="Spaun">
 			<product name="SUS 21 F" format="EN50494" positions="2" scr1="1076" scr2="1178"/>
 			<product name="SUS 21 FI" format="EN50494" positions="2" scr1="1210" scr2="1420"/>
+			<product name="SUS 21 FX" format="EN50607" positions="4" scr1="1076" scr2="1178"/>
 			<product name="SUS 4441 F" format="EN50494" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="SUS 5541 F-NFA" format="EN 50494" scr1="0974" scr2="1076" scr3="1178" scr4="1280"/>
 			<product name="SUS 5581 F-NFA" format="UniSEqC" scr1="0974" scr2="1076" scr3="1178" scr4="1280" scr5="1382" scr6="1484" scr7="1586" scr8="1688"/>
@@ -478,6 +496,12 @@ unicable (version)
 			<product name="TechniRouter Mini 2/1x2" format="EN50494" positions="2" scr1="1284" scr2="1400" permpin1="111" permpin2="222"/>
 			<product name="TechniRouter 5/1x4" scr1="1210" scr2="1420" scr3="1680" scr4="2040"/>
 			<product name="TechniRouter 5/1x8" scr1="1284" scr2="1400" scr3="1516" scr4="1632" scr5="1748" scr6="1864" scr7="1980" scr8="2096"/>
+			<product name="TechniRouter 5/1x16" format="jess"
+					scr1 ="1210" scr2 ="1420" scr3 ="1680" scr4 ="2040" scr5 ="985"  scr6 ="1050" scr7 ="1115" scr8 ="1295"
+					scr9 ="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>
+			<product name="TechniRouter 9/4x16" format="EN50607" positions="4"
+					scr1 ="1210" scr2 ="1420" scr3 ="1680" scr4 ="2040" scr5 ="985"  scr6 ="1050" scr7 ="1115" scr8 ="1295"
+					scr9 ="1340" scr10="1485" scr11="1550" scr12="1615" scr13="1745" scr14="1810" scr15="1875" scr16="1940"/>
 			<product name="TechniRouter 9/1x8" positions="2" scr1="1284" scr2="1400" scr3="1516" scr4="1632" scr5="1748" scr6="1864" scr7="1980" scr8="2096"/>
 			<product name="TechniRouter 5/2x4" scr1="1284" scr2="1400" scr3="1516" scr4="1632"/>
 			<product name="TechniRouter 9/2x4" positions="2" scr1="1284" scr2="1400" scr3="1516" scr4="1632"/>

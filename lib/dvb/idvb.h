@@ -229,8 +229,9 @@ public:
 		avcHdStereo         = 0x1C, // 28             H.264/AVC frame compatible plano - stereoscopic HD digital television service (see note 3)
 		nvodAvcHdStereoTs   = 0x1D, // 29             H.264/AVC frame compatible plano - stereoscopic HD NVOD time - shifted service (see note 3)
 		nvodAvcHdStereoRef  = 0x1E, // 30             H.264/AVC frame compatible plano - stereoscopic HD NVOD reference service (see note 3)
-		nvecTv              = 0x1F, // 31             HEVC digital television service
-				    //0x20, // 32 to 0x7F/127 reserved for future use
+		nvecTv              = 0x1F, // 31             HEVC digital television service (see note 4) 
+		nvecTv20            = 0x20, // 32             HEVC UHD digital television service with HDR and/or a frame rate of 100 Hz, 120 000/1 001 Hz, or 120 Hz, or any combination of HDR and these frame rates (see note 5) 
+				    //0x21, // 33 to 0x7F/127 reserved for future use
 				    //0x80, //128 to 0xFE/254 user defined
 		user134             = 0x86, //134             ???
 		user195             = 0xC3, //195             ???
@@ -346,6 +347,8 @@ public:
 		/* m_service_name_sort is uppercase, with special chars removed, to increase sort performance. */
 	std::string m_service_name, m_service_name_sort;
 	std::string m_provider_name;
+	std::string m_default_authority;
+	uint32_t m_aus_da_flag;
 
 	void genSortName();
 
@@ -760,6 +763,7 @@ public:
 	virtual RESULT getCAAdapterID(uint8_t &id)=0;
 	virtual RESULT flush()=0;
 	virtual int openDVR(int flags)=0;
+	virtual int getSource()=0;
 };
 
 class iTSMPEGDecoder: public iObject
@@ -809,6 +813,14 @@ public:
 
 		/** Display any complete data as fast as possible */
 	virtual RESULT setTrickmode()=0;
+
+	virtual RESULT prepareFCC(int fe_id, int vpid, int vtype, int pcrpid)=0;
+
+	virtual RESULT fccDecoderStart()=0;
+
+	virtual RESULT fccDecoderStop()=0;
+
+	virtual RESULT fccUpdatePids(int fe_id, int vpid, int vtype, int pcrpid)=0;
 
 	virtual RESULT getPTS(int what, pts_t &pts) = 0;
 

@@ -5,25 +5,24 @@ from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
 from Components.config import config, ConfigNumber, ConfigSelection, ConfigSelectionNumber, getConfigListEntry
+from Components.SystemInfo import BoxInfo
 from Plugins.Plugin import PluginDescriptor
 
 from enigma import setAnimation_current, setAnimation_speed
 
-from boxbranding import getBrandOEM
+GIGABLUE = BoxInfo.getItem("brand") == 'gigablue'
 
-if not getBrandOEM() == 'gigablue':
-	from enigma import setAnimation_current_listbox
-	
 # default = disabled
-if getBrandOEM() == 'gigablue':
+if GIGABLUE:
 	g_default = {
 		"current": 0,
-		"speed"  : 20,
+		"speed": 20,
 		}
 else:
+	from enigma import setAnimation_current_listbox
 	g_default = {
 		"current": 0,
-		"speed"  : 20,
+		"speed": 20,
 		"listbox": "0",
 		}
 
@@ -35,11 +34,12 @@ g_orig_doClose = None
 
 config.misc.window_animation_default = ConfigNumber(default=g_default["current"])
 config.misc.window_animation_speed = ConfigSelectionNumber(15, g_max_speed, 1, default=g_default["speed"])
-if not getBrandOEM() == 'gigablue':
-	config.misc.listbox_animation_default = ConfigSelection(default = g_default["listbox"], choices = [ ("0", _("Disable")), ("1", _("Enable")), ("2", _("Same behavior as current animation")) ])
+if not GIGABLUE:
+	config.misc.listbox_animation_default = ConfigSelection(default=g_default["listbox"], choices=[("0", _("Disable")), ("1", _("Enable")), ("2", _("Same behavior as current animation"))])
+
 
 class AnimationSetupConfig(ConfigListScreen, Screen):
-	skin="""
+	skin = """
 		<screen position="center,center" size="600,140" title="Animation Setup">
 			<widget name="config" position="0,0" size="600,100" scrollbarMode="showOnDemand" />
 			<ePixmap pixmap="skin_default/buttons/red.png" position="0,100" size="140,40" alphatest="on" />
@@ -52,20 +52,19 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 		"""
 
 	def __init__(self, session):
-		self.session = session
 		self.entrylist = []
 
 		Screen.__init__(self, session)
 		ConfigListScreen.__init__(self, self.entrylist)
 
-		self["actions"] = ActionMap(["OkCancelActions", "ColorActions",], {
-			"ok"     : self.keyGreen,
-			"green"  : self.keyGreen,
-			"yellow" : self.keyYellow,
-			"red"    : self.keyRed,
-			"cancel" : self.keyRed,
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions", ], {
+			"ok": self.keyGreen,
+			"green": self.keyGreen,
+			"yellow": self.keyYellow,
+			"red": self.keyRed,
+			"cancel": self.keyRed,
 		}, -2)
-		self["key_red"]   = StaticText(_("Cancel"))
+		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText(_("Default"))
 
@@ -73,13 +72,13 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def layoutFinished(self):
-		self.setTitle(_('Animation Setup'))
+		self.setTitle(_("Animation Setup"))
 
 	def keyGreen(self):
 		config.misc.window_animation_speed.save()
 		setAnimation_speed(int(config.misc.window_animation_speed.value))
 		config.misc.listbox_animation_default.save()
-		if not getBrandOEM() == 'gigablue':
+		if not GIGABLUE:
 			setAnimation_current_listbox(int(config.misc.listbox_animation_default.value))
 		self.close()
 
@@ -91,7 +90,7 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 	def keyYellow(self):
 		global g_default
 		config.misc.window_animation_speed.value = g_default["speed"]
-		if not getBrandOEM() == 'gigablue':
+		if not GIGABLUE:
 			config.misc.listbox_animation_default.value = g_default["listbox"]
 		self.makeConfigList()
 
@@ -106,7 +105,7 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 		entrySpeed = getConfigListEntry(_("Animation Speed"), config.misc.window_animation_speed)
 		self.entrylist.append(entrySpeed)
-		if not getBrandOEM() == 'gigablue':
+		if not GIGABLUE:
 			entryMoveSelection = getConfigListEntry(_("Enable Focus Animation"), config.misc.listbox_animation_default)
 			self.entrylist.append(entryMoveSelection)
 		self["config"].list = self.entrylist
@@ -114,35 +113,35 @@ class AnimationSetupConfig(ConfigListScreen, Screen):
 
 
 class AnimationSetupScreen(Screen):
-	if getBrandOEM() == 'gigablue':
+	if GIGABLUE:
 		animationSetupItems = [
-			{"idx":0, "name":_("Disable Animations")},
-			{"idx":1, "name":_("Simple fade")},
-			{"idx":2, "name":_("Simple zoom")},
-			{"idx":3, "name":_("Grow drop")},
-			{"idx":4, "name":_("Grow from left")},
-			{"idx":5, "name":_("Extrude from left")},
+			{"idx": 0, "name": _("Disable Animations")},
+			{"idx": 1, "name": _("Simple fade")},
+			{"idx": 2, "name": _("Simple zoom")},
+			{"idx": 3, "name": _("Grow drop")},
+			{"idx": 4, "name": _("Grow from left")},
+			{"idx": 5, "name": _("Extrude from left")},
 			#{"idx":6, "name":_("Popup")},
-			{"idx":7, "name":_("Slide drop")},
-			{"idx":8, "name":_("Slide from left")},
-			{"idx":9, "name":_("Slide left to right")},
-			{"idx":10, "name":_("Slide right to left")},
-			{"idx":11, "name":_("Slide top to bottom")},
-			{"idx":12, "name":_("Zoom from left")},
-			{"idx":13, "name":_("Zoom from right")},
-			{"idx":14, "name":_("Stripes")},
+			{"idx": 7, "name": _("Slide drop")},
+			{"idx": 8, "name": _("Slide from left")},
+			{"idx": 9, "name": _("Slide left to right")},
+			{"idx": 10, "name": _("Slide right to left")},
+			{"idx": 11, "name": _("Slide top to bottom")},
+			{"idx": 12, "name": _("Zoom from left")},
+			{"idx": 13, "name": _("Zoom from right")},
+			{"idx": 14, "name": _("Stripes")},
 		]
 	else:
 		animationSetupItems = [
-			{"idx":0, "name":_("Disable Animations")},
-			{"idx":1, "name":_("Simple fade")},
-			{"idx":2, "name":_("Grow drop")},
-			{"idx":3, "name":_("Grow from left")},
-			{"idx":4, "name":_("Popup")},
-			{"idx":5, "name":_("Slide drop")},
-			{"idx":6, "name":_("Slide left to right")},
-			{"idx":7, "name":_("Slide top to bottom")},
-			{"idx":8, "name":_("Stripes")},
+			{"idx": 0, "name": _("Disable Animations")},
+			{"idx": 1, "name": _("Simple fade")},
+			{"idx": 2, "name": _("Grow drop")},
+			{"idx": 3, "name": _("Grow from left")},
+			{"idx": 4, "name": _("Popup")},
+			{"idx": 5, "name": _("Slide drop")},
+			{"idx": 6, "name": _("Slide left to right")},
+			{"idx": 7, "name": _("Slide top to bottom")},
+			{"idx": 8, "name": _("Stripes")},
 		]
 
 	skin = """
@@ -178,7 +177,7 @@ class AnimationSetupScreen(Screen):
 			{
 				"cancel": self.keyclose,
 				"save": self.ok,
-				"ok" : self.ok,
+				"ok": self.ok,
 				"yellow": self.config,
 				"blue": self.preview
 			}, -3)
@@ -194,7 +193,7 @@ class AnimationSetupScreen(Screen):
 			name = x.get("name", "??")
 			if key == config.misc.window_animation_default.value:
 				name = "* %s" % (name)
-			l.append( (name, key) )
+			l.append((name, key))
 
 		self["list"].setList(l)
 
@@ -205,14 +204,14 @@ class AnimationSetupScreen(Screen):
 			config.misc.window_animation_default.value = key
 			config.misc.window_animation_default.save()
 			setAnimation_current(key)
-			if not getBrandOEM() == 'gigablue':
+			if not GIGABLUE:
 				setAnimation_current_listbox(int(config.misc.listbox_animation_default.value))
 		self.close()
 
 	def keyclose(self):
 		setAnimation_current(config.misc.window_animation_default.value)
 		setAnimation_speed(int(config.misc.window_animation_speed.value))
-		if not getBrandOEM() == 'gigablue':
+		if not GIGABLUE:
 			setAnimation_current_listbox(int(config.misc.listbox_animation_default.value))
 		self.close()
 
@@ -230,13 +229,15 @@ class AnimationSetupScreen(Screen):
 			self.session.open(MessageBox, current[0], MessageBox.TYPE_INFO, timeout=3)
 			g_animation_paused = tmp
 
+
 def checkAttrib(self, paused):
 	global g_animation_paused
-	if g_animation_paused is paused and self.skinAttributes is not None:
+	if g_animation_paused is paused and hasattr(self, "skinAttributes") and self.skinAttributes:
 		for (attr, value) in self.skinAttributes:
 			if attr == "animationPaused" and value in ("1", "on"):
 				return True
 	return False
+
 
 def screen_show(self):
 	global g_animation_paused
@@ -248,6 +249,7 @@ def screen_show(self):
 	if checkAttrib(self, False):
 		g_animation_paused = True
 
+
 def screen_doClose(self):
 	global g_animation_paused
 	if checkAttrib(self, True):
@@ -255,19 +257,22 @@ def screen_doClose(self):
 		setAnimation_current(config.misc.window_animation_default.value)
 	g_orig_doClose(self)
 
+
 def animationSetupMain(session, **kwargs):
 	session.open(AnimationSetupScreen)
 
+
 def startAnimationSetup(menuid):
-	if menuid != "osd_menu":
+	if menuid != "video_menu":
 		return []
 
-	return [( _("Animations"), animationSetupMain, "animation_setup", 3)]
+	return [(_("Animations"), animationSetupMain, "animation_setup", 30)]
+
 
 def sessionAnimationSetup(session, reason, **kwargs):
 	setAnimation_current(config.misc.window_animation_default.value)
 	setAnimation_speed(int(config.misc.window_animation_speed.value))
-	if not getBrandOEM() == 'gigablue':
+	if not GIGABLUE:
 		setAnimation_current_listbox(int(config.misc.listbox_animation_default.value))
 
 	global g_orig_show, g_orig_doClose
@@ -278,17 +283,18 @@ def sessionAnimationSetup(session, reason, **kwargs):
 	Screen.show = screen_show
 	Screen.doClose = screen_doClose
 
+
 def Plugins(**kwargs):
 	plugin_list = [
 		PluginDescriptor(
-			name = "Animations",
-			description = "Setup UI animations",
-			where = PluginDescriptor.WHERE_MENU,
-			needsRestart = False,
-			fnc = startAnimationSetup),
+			name="Animations",
+			description="Setup UI animations",
+			where=PluginDescriptor.WHERE_MENU,
+			needsRestart=False,
+			fnc=startAnimationSetup),
 		PluginDescriptor(
-			where = PluginDescriptor.WHERE_SESSIONSTART,
-			needsRestart = False,
-			fnc = sessionAnimationSetup),
+			where=PluginDescriptor.WHERE_SESSIONSTART,
+			needsRestart=False,
+			fnc=sessionAnimationSetup),
 	]
-	return plugin_list;
+	return plugin_list

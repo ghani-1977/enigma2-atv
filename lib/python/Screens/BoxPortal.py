@@ -1,3 +1,4 @@
+from __future__ import print_function
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap, HelpableActionMap, NumberActionMap
 from Components.Sources.List import List
@@ -6,16 +7,16 @@ from Screens.InfoBar import InfoBar
 from Components.PluginComponent import plugins
 from Plugins.Plugin import PluginDescriptor
 
-from boxbranding import getBoxType
 
 def isExtension_installed(pname):
 	try:
-		for plugin in plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU,PluginDescriptor.WHERE_EXTENSIONSMENU]):
+		for plugin in plugins.getPlugins([PluginDescriptor.WHERE_PLUGINMENU, PluginDescriptor.WHERE_EXTENSIONSMENU]):
 			if plugin.name == pname:
 				return True
 				break
 	except:
 		return False
+
 
 class BoxPortal(Screen):
 	skin = """
@@ -49,7 +50,7 @@ class BoxPortal(Screen):
 			list.append((_("Enhanced Movie Center"), "emc", "", "50"))
 		if isExtension_installed('Media Center'):
 			list.append((_("Media Center"), "bmc", "", "50"))
-		if isExtension_installed(_("Media player")):
+		if isExtension_installed(_("Media Player")):
 			list.append((_("Media Player"), "MediaPlayer", "", "50"))
 		if isExtension_installed('MediaPortal'):
 			list.append((_("Media Portal"), "MediaPortal", "", "50"))
@@ -86,7 +87,7 @@ class BoxPortal(Screen):
 					from Plugins.Extensions.AZPlay.plugin import main
 					open(main(self.session))
 				except Exception as e:
-					print('[AZPlay] exception:\n' + str(e))					
+					print('[AZPlay] exception:\n' + str(e))
 			elif selection[1] == "teletext":
 				self.InfoBarTeletextPlugin()
 
@@ -96,7 +97,6 @@ class BoxPortal(Screen):
 			self.teletext_plugin = p
 
 		self.teletext_plugin(session=self.session, service=self.session.nav.getCurrentService())
-
 
 	def exit(self):
 		self.close()

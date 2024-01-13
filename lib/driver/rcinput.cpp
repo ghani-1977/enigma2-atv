@@ -13,7 +13,9 @@
 #include <lib/base/init_num.h>
 #include <lib/driver/input_fake.h>
 
+#if WETEKRC
 static bool bflag;
+#endif
 
 void eRCDeviceInputDev::handleCode(long rccode)
 {
@@ -75,8 +77,10 @@ void eRCDeviceInputDev::handleCode(long rccode)
 			case KEY_TAB:
 			case KEY_BACKSPACE:
 /*
+#if WETEKRC
 				bflag = !bflag;
 				eDebug("[eRCDeviceInputDev] --> AFTER flip BackspaceFLAG %d", bflag);
+#endif
 */
 			case KEY_ENTER:
 			case KEY_INSERT:
@@ -108,6 +112,27 @@ void eRCDeviceInputDev::handleCode(long rccode)
 			return;
 		}
 	}
+
+	if (!remaps.empty())
+	{
+		std::unordered_map<unsigned int, unsigned int>::iterator i = remaps.find(ev->code);
+		if (i != remaps.end())
+		{
+			eDebug("[eRCDeviceInputDev] map: %u->%u", i->first, i->second);
+			ev->code = i->second;
+		}
+	}
+	else
+	{
+#if KEY_PLAY_ACTUALLY_IS_KEY_PLAYPAUSE
+		if (ev->code == KEY_PLAY)
+		{
+			if ((id == "dreambox advanced remote control (native)")  || (id == "bcm7325 remote control"))
+			{
+				ev->code = KEY_PLAYPAUSE;
+			}
+		}
+#endif
 
 #if TIVIARRC
 	if (ev->code == KEY_EPG) {
@@ -679,6 +704,8 @@ void eRCDeviceInputDev::handleCode(long rccode)
 	}
 #endif
 
+	}
+	
 	switch (ev->value)
 	{
 		case 0:
@@ -691,6 +718,12 @@ void eRCDeviceInputDev::handleCode(long rccode)
 			input->keyPressed(eRCKey(this, ev->code, eRCKey::flagRepeat)); /*emit*/
 			break;
 	}
+}
+
+int eRCDeviceInputDev::setKeyMapping(const std::unordered_map<unsigned int, unsigned int>& remaps_p)
+{
+	remaps = remaps_p;
+	return eRCInput::remapOk;
 }
 
 eRCDeviceInputDev::eRCDeviceInputDev(eRCInputEventDriver *driver, int consolefd)

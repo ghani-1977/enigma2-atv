@@ -1,15 +1,17 @@
+from __future__ import absolute_import
 from Screens.Screen import Screen
 from Components.ActionMap import NumberActionMap
 from Components.Label import Label
 from Screens.ChoiceBox import ChoiceBox
 from Screens.MessageBox import MessageBox
-from InfoBarGenerics import InfoBarShowHide, InfoBarMenu, InfoBarInstantRecord, InfoBarTimeshift, InfoBarSeek, InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport, InfoBarAudioSelection
+from Screens.InfoBarGenerics import InfoBarShowHide, InfoBarMenu, InfoBarInstantRecord, InfoBarTimeshift, InfoBarSeek, InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport, InfoBarAudioSelection
 from enigma import eServiceReference
 from Components.ServiceEventTracker import InfoBarBase
 
-class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu, \
-		InfoBarInstantRecord, InfoBarSeek, InfoBarTimeshift, \
-		InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport, \
+
+class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu,
+		InfoBarInstantRecord, InfoBarSeek, InfoBarTimeshift,
+		InfoBarTimeshiftState, InfoBarExtensions, InfoBarSubtitleSupport,
 		InfoBarAudioSelection, Screen):
 	def __init__(self, session, subservices):
 		Screen.__init__(self, session)
@@ -24,7 +26,7 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu, \
 		self.__lastservice = self.currentlyPlayingSubservice = self.getSubserviceIndex(self.session.nav.getCurrentlyPlayingServiceReference())
 		self["CurrentSubserviceNumber"] = Label("")
 		self.currentSubserviceNumberLabel = self["CurrentSubserviceNumber"]
-		self["actions"] = NumberActionMap( [ "InfobarSubserviceQuickzapActions", "NumberActions", "DirectionActions", "ColorActions" ],
+		self["actions"] = NumberActionMap(["InfobarSubserviceQuickzapActions", "NumberActions", "DirectionActions", "ColorActions"],
 			{
 				"up": self.showSelection,
 				"down": self.showSelection,
@@ -64,8 +66,8 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu, \
 			self.playSubservice((self.currentlyPlayingSubservice - 1) % len(self.subservices))
 
 	def getSubserviceIndex(self, service):
-		if self.subservices and service and service.toString() in [x[1] for x in self.subservices]:
-			return [x[1] for x in self.subservices].index(service.toString())
+		if self.subservices and service and service.toCompareString() in [x[1] for x in self.subservices]:
+			return [x[1] for x in self.subservices].index(service.toCompareString())
 
 	def keyNumberGlobal(self, number):
 		if number == 0:
@@ -80,7 +82,9 @@ class SubservicesQuickzap(InfoBarBase, InfoBarShowHide, InfoBarMenu, \
 
 	def subserviceSelected(self, service):
 		if service:
-			self.playSubservice(service[1])
+			index = self.getSubserviceIndex(eServiceReference(service[1]))
+			if index != self.currentlyPlayingSubservice:
+				self.playSubservice(index)
 
 	def keyOK(self):
 		self.doShow()
